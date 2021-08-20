@@ -3,20 +3,16 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
-router.get('/', async (req, { status }) => {
+router.get('/', async (req, res) => {
   // find all categories
-  // be sure to include its associated Products
-  try {
+  // be sure to include its 
     const categoryData = await Category.findAll({
       include: [Product]
     });
-    status(200).json(categoryData);
-  } catch (err) {
-    status(500).json(err);
-  }
+    res.status(200).json(categoryData);
 });
 
-router.get('/:id', async ({req}, { status }) => {
+router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
   try{
@@ -26,23 +22,23 @@ router.get('/:id', async ({req}, { status }) => {
       },
       include: [Product]
     })
-    status(200).json(categoryData);
+    res.status(200).json(categoryData);
   } catch (err) {
-    status(400).json(err);
+    res.status(400).json(err);
   }
 });
 
-router.post('/', async ({ body }, { status }) => {
+router.post('/', async ({ body }, res) => {
   // create a new category
   try{
     const categoryData = await Category.create(body);
-    status(200).json(categoryData);
+    res.status(200).json(categoryData);
   } catch (err) {
-    status(400).json(err);
+    res.status(400).json(err);
   }
 });
 
-router.put('/:id', async (req, { status }) => {
+router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {
     const categoryData = await Category.update(req.body, {
@@ -50,13 +46,13 @@ router.put('/:id', async (req, { status }) => {
         id: req.params.id
       }
     });
-    status(200).json(categoryData);
+    res.status(200).json(categoryData);
   } catch (err) {
-    status(400).json(err);
+    res.status(400).json(err);
   }
 });
 
-router.delete('/:id', async (req, { status }) => {
+router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
   try {
     const categoryData = await Category.destroy({
@@ -64,9 +60,9 @@ router.delete('/:id', async (req, { status }) => {
         id: req.params.id
       }
     });
-    status(200).json(categoryData);
+    res.status(200).json(categoryData);
   } catch (error) {
-    status(200).json(err);
+    res.status(200).json(err);
   }
 });
 
