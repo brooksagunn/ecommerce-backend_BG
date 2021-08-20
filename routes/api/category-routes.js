@@ -68,7 +68,6 @@ router.delete('/:id', (req, { status }) => {
   } catch (error) {
     status(200).json(err);
   }
-
 });
 
 module.exports = router;
