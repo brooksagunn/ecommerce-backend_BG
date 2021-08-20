@@ -21,9 +21,23 @@ router.get('/', (req, { status }) => {
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, { status }) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  try {
+    const productData = await Product.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [Category, {
+        model: Tag,
+        through: ProductTag
+      }]
+    });
+    status(200).json(productData);
+  } catch (err) {
+    status(400).json(err);
+  }
 });
 
 // create new product
@@ -100,8 +114,18 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, { status }) => {
   // delete one product by its `id` value
+  try {
+    const productData = Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    status(200).json(productData);
+  } catch (err) {
+    status(400).json(err);
+  }
 });
 
 module.exports = router;
