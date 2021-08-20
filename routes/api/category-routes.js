@@ -16,9 +16,20 @@ router.get('/', (req, { status }) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, { status }) => {
   // find one category by its `id` value
   // be sure to include its associated Products
+  try{
+    const categoryData = await Category.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [Product]
+    })
+    status(200).json(categoryData);
+  } catch (err) {
+    status(400).json(err);
+  }
 });
 
 router.post('/', (req, res) => {
