@@ -16,7 +16,7 @@ router.get('/', (req, { status }) => {
   }
 });
 
-router.get('/:id', (req, { status }) => {
+router.get('/:id', ({req}, { status }) => {
   // find one category by its `id` value
   // be sure to include its associated Products
   try{
@@ -32,8 +32,14 @@ router.get('/:id', (req, { status }) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', ({ body }, { status }) => {
   // create a new category
+  try{
+    const categoryData = Category.create(body);
+    status(200).json(categoryData);
+  } catch (err) {
+    status(400).json(err);
+  }
 });
 
 router.put('/:id', (req, res) => {
